@@ -1,0 +1,44 @@
+<synthetic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+
+    <type type="mywebhooks.UrlParameterTokenAuthentication"
+        extends="events.CustomJythonAuthentication"
+        label="URL Parameter Token"
+        description="Verify that the value of a given URL parameter matches the secret token.">
+        <property name="parameter" kind="string" required="true"
+            label="URL parameter"
+            description="URL parameter name containing the token."/>
+        <property name="token" kind="string" password="true" required="true"
+            label="Token"
+            description="Secret token value."/>
+    </type>
+    <type type="mywebhooks.ChatMessageEvent" extends="events.Event"
+        label="Chat Message"
+        description="A simple Chat Message event. A message sent by a user on a certain topic.">
+        <property name="user" kind="string" required="true"/>
+        <property name="topic" kind="string" required="true" default="#general"/>
+        <property name="message" kind="string" required="true"/>
+    </type>
+    <type type="mywebhooks.ChatMessageEventSource" extends="events.CustomJythonEventSource"
+        label="Chat Message Event Source"
+        description="An Event Source emitting Chat Message Events. Consumes Http Request Events.">
+        <property name="inputEventType" kind="string" default="events.HttpRequestEvent"
+            required="true" hidden="true"/>
+        <property name="outputEventType" kind="string" default="mywebhooks.ChatMessageEvent"
+            required="true" hidden="true"/>
+        <property name="scriptLocation" default="mywebhooks/ChatMessageEventSource.py" hidden="true" />
+        <property name="topics" kind="set_of_string"
+            required="false"
+            label="Topics"
+            description="Consider only messages on these topics. If left empty, consider all topics."/>
+        <property name="ignoredUsers" kind="set_of_string"
+            required="false"
+            label="Ignore users"
+            description="Ignore messages from these users."/>
+        <property name="badWords" kind="set_of_string"
+            required="false"
+            label="Bad words"
+            description="Ignore messages that include one of these words."/>
+    </type>
+</synthetic>
